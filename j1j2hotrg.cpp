@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <vector>
+#include <cmath>
 #include "uni10.hpp"
 #include "Parser.hpp"
 #include "Utils.hpp"
@@ -37,26 +38,20 @@ int main(int argc, char* argv[]){
     pars.PrintVars();
 
 
-    ///Prepare Buffer tensors;
-    vector<UniTensor<double>> Us;
-    UniTensor<double> S;
-    vector<Matrix<double> > Ls;
-
+    ///Prepare Network;
+	Network Nwrk_lr("lr.net");
+    Network Nwrk_ud("ud.net");
 
     ///Local Tensor:
     UniTensor<double> T = Utils::MakeLocal(J1,J2,Beta);
 
-    //Coursgran :
 
-    //contract
-    Network net("cg_lr.net");
-    net.PutTensor(0,T);
-    net.PutTensor(1,T);
-    net.Launch(T);
-    //hosvd
-    Hosvd(T,vector<int>{1,4,3,6,0,5},vector<int>{2,2},Us,S,Ls, INPLACE);
-    //truncate:
-
+	///Cgran.
+	//for(unsigned int itr=0;itr<nL;itr++){
+		//printf("RC iter : %4d | L : %4d ",itr,(unsigned int)pow(2,itr+1) );
+		Utils::Update(0,chi,T,Nwrk_lr);
+		//Utils::Update(1,chi,T,Nwrk_ud);
+	//}
 
 
 

@@ -4,7 +4,7 @@
 	<Project>
 		<Option title="j1j2hotrg" />
 		<Option makefile_is_custom="1" />
-		<Option execution_dir="../J1J2HOTRG" />
+		<Option execution_dir="../j1j2hotrg" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -49,7 +49,9 @@
 		<Unit filename="Utils.hpp" />
 		<Unit filename="cg_lr.net" />
 		<Unit filename="j1j2hotrg.cpp" />
+		<Unit filename="lr.net" />
 		<Unit filename="simparam.rc" />
+		<Unit filename="ud.net" />
 		<Extensions>
 			<code_completion />
 			<debugger />
