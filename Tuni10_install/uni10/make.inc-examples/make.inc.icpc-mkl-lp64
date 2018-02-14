@@ -1,0 +1,94 @@
+# 
+# --------------------
+# version name of uni10
+
+## Name of the package of the linear algebra solvers.
+LNPACKAGE   = lapack
+## Computational architecture.
+CALARCH     = cpu
+
+# --------------------
+#
+# --------------------
+# programs
+
+CC        = icc
+CXX       = icpc
+
+ARCH      = ar
+ARCHFLAGS = cr
+RANLIB    = ranlib
+
+
+# --------------------
+#
+# --------------------
+# flags
+#
+# UNI10 MACRO FLAGS
+UNI10CXXFLAGS = -DUNI_CPU -DUNI_LAPACK -DUNI_MKL
+
+# Use -fPIC to make shared (.so) and static (.a) library;
+# can be commented out if making only static library.
+##
+## Our ATLAS installation has only static libraries, and one can't
+## build a shared library against a static library, so disable FPIC.
+FPIC      = -fPIC
+
+CFLAGS       = -O3 $(FPIC) -Wall -fopenmp
+LDFLAGS      =     $(FPIC)       -fopenmp
+STATICFLAGS  = -Wl, -static-intel, -staticlib, --whole-archive 
+
+# USE BOOST random generators or not.
+#
+# CFLAGS    += -DBOOST
+#
+
+# C++11 (gcc >= 4.7) is not required, but has benefits like atomic operations
+CXXFLAGS := $(UNI10CXXFLAGS) $(CFLAGS) -pthread -fpermissive -std=c++11
+CFLAGS   += -std=c99
+
+# --------------------
+#
+# --------------------
+# Librarys links
+
+LDLIBRARIES := stdc++
+
+# USE BOOST random generators or not.
+#
+# LDLIBRARIES    += boost_system boost_filesystem boost_thread
+#
+# MKL links
+
+LDLIBRARIES += mkl_intel_lp64 mkl_intel_thread mkl_core iomp5 pthread m dl
+
+# Compiler options
+
+CXXFLAGS +=
+
+# MKL include
+
+BLAS_INCLUDE := $(MKLROOT)/include
+BLAS_LIB     := $(MKLROOT)/lib/intel64
+
+# --------------------
+#
+# --------------------
+# customized settings
+
+UNI10_INSTALL_PREFIX := ~/myLib/uni10
+
+# --------------------
+#
+# --------------------
+# google test
+
+GTEST := 0
+
+# Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171
+# DEBUG := 1
+
+# --------------------
+
+Q ?= @

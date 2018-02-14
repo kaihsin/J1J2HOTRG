@@ -1,0 +1,9 @@
+#### For loading itebd parameters ####
+D: 3
+max_D: 6
+max_N: 100000
+tau: 1.0e-4
+eps: 1.0e-14
+cut_off: -1
+measure_per_n_iter: 1000
+######################################

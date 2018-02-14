@@ -1,0 +1,109 @@
+# 
+# --------------------
+# version name of uni10
+
+## Name of the package of the linear algebra solvers.
+LNPACKAGE   = scalapack
+## Computational architecture.
+CALARCH     = mpi
+
+# --------------------
+#
+# --------------------
+# programs
+
+CXX       = mpic++
+
+ARCH      = ar
+ARCHFLAGS = cr
+RANLIB    = ranlib
+
+# --------------------
+#
+# --------------------
+# flags
+
+# UNI10 MACRO FLAGS
+
+UNI10CXXFLAGS = -DUNI_MPI -DUNI_SCALAPACK
+
+# Use -fPIC to make shared (.so) and static (.a) library;
+# can be commented out if making only static library.
+##
+## Our ATLAS installation has only static libraries, and one can't
+## build a shared library against a static library, so disable FPIC.
+
+FPIC      = -fPIC
+
+CFLAGS       = -O3 $(FPIC) -lgfortran -Wall -fopenmp
+LDFLAGS      =     $(FPIC)              -fopenmp
+STATICFLAGS  = -Wl,--whole-archive 
+
+# USE BOOST random generators or not.
+#
+# CFLAGS    += -DBOOST
+#
+
+# C++11 (gcc >= 4.7) is not required, but has benefits like atomic operations
+CXXFLAGS  := $(UNI10CXXFLAGS) $(CFLAGS) -pthread -fpermissive -std=c++11
+CFLAGS    += -std=c99
+
+WARNINGS  = -Wno-uninitialized
+
+# --------------------
+#
+# --------------------
+# link librarys
+
+LDLIBRARIES := stdc++ m
+
+# USE BOOST random generators or not.
+#
+# LDLIBRARIES    += boost_system boost_filesystem boost_thread
+#
+# ATLAS links for Ubuntu
+#  
+LDLIBRARIES += gfortran blas lapack scalapack
+#
+# ATLAS links for fedora and CentOS
+# LDLIBRARIES += blas lapack atlas
+#
+
+# Compiler options
+
+CXXFLAGS +=
+
+# BLAS INCLUDE PATH
+
+BLAS_INCLUDE  := 
+BLAS_LIB      :=
+
+# SCALAPACK MPI BLACS PATH
+
+# BLACS_LIB := /home/Yun-Hsuan/Packages/BLACS/LIB/blacsCinit_MPI-LINUX-0.a /home/Yun-Hsuan/Packages/BLACS/LIB/blacs_MPI-LINUX-0.a
+
+# SCALAPACK LIBRARY PATH
+
+# SCALAPACK_LIB := /home/Yun-Hsuan/Packages/scalapack-2.0.2/libscalapack.a
+
+# --------------------
+#
+# --------------------
+# customized settings
+
+UNI10_INSTALL_PREFIX := ~/myLib/uni10_mpi
+
+# --------------------
+#
+# --------------------
+# google test
+
+GTEST := 0
+
+# Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171
+# DEBUG := 1
+
+# --------------------
+
+# enable pretty build (comment to see full commands)
+Q ?= @

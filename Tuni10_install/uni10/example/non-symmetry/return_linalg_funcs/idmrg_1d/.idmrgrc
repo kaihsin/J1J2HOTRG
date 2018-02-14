@@ -1,0 +1,7 @@
+#### For loading idmrg parameters ####
+chi: 20
+max_N: 10000
+lanczos_max_iter: 500
+tol: 1.0e-15
+measure_per_n_iter: 100
+######################################

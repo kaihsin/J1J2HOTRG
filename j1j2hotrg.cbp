@@ -7,6 +7,11 @@
 		<Option execution_dir="../j1j2hotrg" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option show_notes="0">
+			<notes>
+				<![CDATA[Hosvd inplace will result as a modified permuted Input Tensor ! ]]>
+			</notes>
+		</Option>
 		<Build>
 			<Target title="Debug">
 				<Option output="j1j2hotrg" prefix_auto="1" extension_auto="1" />
@@ -45,6 +50,7 @@
 		<Unit filename="Makefile" />
 		<Unit filename="Parser.cpp" />
 		<Unit filename="Parser.hpp" />
+		<Unit filename="Tls" />
 		<Unit filename="Utils.cpp" />
 		<Unit filename="Utils.hpp" />
 		<Unit filename="cg_lr.net" />

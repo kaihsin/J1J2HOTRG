@@ -4,16 +4,18 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-#include "uni10.hpp"
-
+//#include "uni10.hpp"
+#include "uni10/uni10.hpp"
 
 namespace Utils{
 
     uni10::UniTensor<double> MakeLocal(const double &J1, const double &J2, const double &Beta);
 	void truncateLUs(const int dir, const int &chi, std::vector<uni10::UniTensor<double> >& svdUs,uni10::UniTensor<double> &T2);
-    void Update(const int dir,const unsigned int &chi,uni10::UniTensor<double> &T, uni10::Network &Nwrk);
+    //void Update(const int dir,const unsigned int &chi,uni10::UniTensor<double> &T, uni10::Network &Nwrk);
+    void Update(const int dir,const unsigned int &chi,uni10::UniTensor<double> &T, uni10::Network<double> &Nwrk);
 
-
+    uni10::UniTensor<double> Make_T(const double &Beta,const double &h,const unsigned int &Chi);
+    double GetMax(uni10::UniTensor<double> &T);
 
 }
 

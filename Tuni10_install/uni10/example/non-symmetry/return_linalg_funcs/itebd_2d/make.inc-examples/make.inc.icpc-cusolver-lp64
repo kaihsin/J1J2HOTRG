@@ -1,0 +1,6 @@
+CXX           := icpc
+CXXFLAGS      := -m64 -O3 -std=c++11
+
+UNI10_ROOT    := $(UNI10_ROOT_GPU)
+UNI10CXXFLAGS := -DUNI_GPU -DUNI_CUSOLVER -DUNI_MKL
+UNI10_VERSION := cusolver_gpu
