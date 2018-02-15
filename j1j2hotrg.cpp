@@ -87,7 +87,7 @@ int main(int argc, char* argv[]){
         //normalize:
         //nrm = Norm(T.GetBlock());
         //nrm = trace(T.getBlock());
-        nrm = Utils::GetMax(T);
+        nrm = abs(Utils::GetMax(T));
         lnNrms.push_back(log(nrm));
         T*= (double)1./nrm;
 
@@ -96,15 +96,16 @@ int main(int argc, char* argv[]){
             //printf(" cgram : %4d | L : %4d \n",itr,(unsigned int)pow(2,itr+1) );
             Utils::Update(0,chi,T,Nwrk_lr);
             Utils::Update(1,chi,T,Nwrk_ud);
-            //nrm = Norm(T.GetBlock());
+            nrm = norm(T.getBlock())*0.8;
             //nrm = Utils::GetMax(T);
-            nrm = trace(T.getBlock());
+            //nrm = abs(trace(T.getBlock()));
             cout << "nrm " << nrm << endl;
-            nrm /= 2;
-            if(nrm>1000)
-                T *= (double)1./nrm;
-            else 
-                nrm = 1;
+            //nrm /= 2;
+			T *= (double)1./nrm;
+            //if(nrm>100)
+            //    T *= (double)1./nrm;
+            //else 
+            //    nrm = 1;
             lnNrms.push_back(log(nrm));
         }
 

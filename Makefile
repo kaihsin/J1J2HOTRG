@@ -1,4 +1,4 @@
-uni10v2ROOT := /home/kaywu/uni10_Temp
+uni10v2ROOT := /home/b01202014/uni10_Temp
 
 CC := icpc
 CCFLAGS := -std=c++11 -O3 -mkl=parallel -DUNI_CPU -DUNI_LAPACK -DUNI_MKL
