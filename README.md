@@ -14,6 +14,8 @@
 
 ## Result ##
 
+Following shows the result for Chi = 10, L = 4096
+
 Energy:
 ![alt text](Data/Lp7Ky10r00/E.jpg)
 
