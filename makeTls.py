@@ -1,16 +1,16 @@
 import os,sys
 
-pth = "Tls"
+pth = "Tls02"
 
 NJ1 = 1
 J1i = 1.0
 J1f = 1.0
 
 NJ2 = 1
-J2i = 0.0
-J2f = 0.0
+J2i = 0.2
+J2f = 0.2
 
-NJT = 80
+NJT = 96
 Ti  = 0.2
 Tf  = 4.0
 

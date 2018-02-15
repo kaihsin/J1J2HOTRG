@@ -64,10 +64,15 @@ int main(int argc, char* argv[]){
     string datDir = "Data/" + ID;
     mkdir("Data",S_IRWXU);
     mkdir(datDir.c_str(),S_IRWXU);
-    string savpath = datDir + "/data";
+    vector<string> savpath(nL,datDir);
     ofstream cfout;
-    cfout.open(savpath.c_str(),ios::out| ios::trunc);
-    cfout.close();
+    for(unsigned int i=0;i<savpath.size();i++){
+        savpath[i] += "/L" + to_string((unsigned int)pow(2,i+1)) + ".data";
+        cfout.open(savpath[i].c_str(),ios::out| ios::trunc);
+        cfout.close();
+    }
+
+
 
     ///buffers:
     double nrm;
@@ -75,6 +80,8 @@ int main(int argc, char* argv[]){
     unsigned int N;
     double tmpZ;
     double lnZ;
+    double L;
+    UniTensor<double> bufT;
 
     for(unsigned int p=0;p<parls.size();p++){
 
@@ -87,13 +94,15 @@ int main(int argc, char* argv[]){
         //normalize:
         //nrm = Norm(T.GetBlock());
         //nrm = trace(T.getBlock());
+        lnNrms.clear();
         nrm = abs(Utils::GetMax(T));
         lnNrms.push_back(log(nrm));
         T*= (double)1./nrm;
 
         ///Cgran.
         for(unsigned int itr=0;itr<nL;itr++){
-            //printf(" cgram : %4d | L : %4d \n",itr,(unsigned int)pow(2,itr+1) );
+            L = pow(2,itr+1);
+            printf(" cgram : %4d | L : %4d \n",itr, (unsigned int)L);
             Utils::Update(0,chi,T,Nwrk_lr);
             Utils::Update(1,chi,T,Nwrk_ud);
             nrm = norm(T.getBlock())*0.8;
@@ -102,45 +111,61 @@ int main(int argc, char* argv[]){
             cout << "nrm " << nrm << endl;
             //nrm /= 2;
 			T *= (double)1./nrm;
-            //if(nrm>100)
-            //    T *= (double)1./nrm;
-            //else 
-            //    nrm = 1;
-            lnNrms.push_back(log(nrm));
-        }
 
-        ///Obsv:
-        double L = pow(2,nL);
+            lnNrms.push_back(log(nrm));
+
+            ///Measurement:
+            bufT = partialTrace(T,0,2);
+            tmpZ = trace(bufT.getBlock());
+            lnZ = log(tmpZ)/L/L;
+            cout << tmpZ << " " << lnZ << endl;
+
+            for(int n=0;n<lnNrms.size();n++){
+                lnZ += lnNrms[lnNrms.size()-n-1] * (pow(4,n)/L/L);
+                //cout << lnZ << endl;
+            }
+
+            cfout.open(savpath[itr].c_str(),ios::out| ios::app);
+            cfout << fixed << setprecision(14) << parls[p].J1   << " "
+                                               << parls[p].J2   << " "
+                                               << parls[p].T    << " "
+                                               << lnZ           << " "
+                                               << -lnZ*parls[p].T << endl;
+            cfout.close();
+            //cfout << "%11.11lf %11.11lf %11.11lf"
+            printf("  lnZ = %010.8lf \t F(per site) = %3.8lf\n",lnZ,-lnZ*parls[p].T);
+
+        }
 
         ///Calc PTfx (Z)
-        T = partialTrace(T,0,2);
-        tmpZ = trace(T.getBlock());
-        cout << tmpZ << endl;
-        lnZ = log(tmpZ)/L/L;
-        cout << lnZ << endl;
-        unsigned int itr = 0;
-        while(lnNrms.size()){
-            lnZ += lnNrms.back() * (pow(4,itr)/L/L);
-            cout << " " << lnNrms.back() ;
-            itr++;
-            lnNrms.pop_back();
-        }
-        cout << endl;
+        //T = partialTrace(T,0,2);
+        //tmpZ = trace(T.getBlock());
+        //cout << tmpZ << endl;
+        //lnZ = log(tmpZ)/L/L;
+        //cout << lnZ << endl;
+        //unsigned int itr = 0;
+        //while(lnNrms.size()){
+        //    lnZ += lnNrms.back() * (pow(4,itr)/L/L);
+        //    cout << " " << lnNrms.back() ;
+        //    itr++;
+        //    lnNrms.pop_back();
+        //}
+        //cout << endl;
 
 
         //lnZ = ln_nrmZ;
         //F   = -ln_nrmZ/Beta/(L*L);
-        cfout.open(savpath.c_str(),ios::out| ios::app);
-        cfout << fixed << setprecision(14) << parls[p].J1   << " "
-                                           << parls[p].J2   << " "
-                                           << parls[p].T    << " "
-                                           << lnZ           << " "
-                                           << -lnZ*parls[p].T << endl;
-        cfout.close();
+        //cfout.open(savpath.c_str(),ios::out| ios::app);
+        //cfout << fixed << setprecision(14) << parls[p].J1   << " "
+        //                                   << parls[p].J2   << " "
+        //                                   << parls[p].T    << " "
+        //                                   << lnZ           << " "
+        //                                   << -lnZ*parls[p].T << endl;
+        //cfout.close();
         //cfout << "%11.11lf %11.11lf %11.11lf"
-        printf("lnZ = %010.8lf \t F(per site) = %3.8lf\n",lnZ,-lnZ*parls[p].T);
+        //printf("lnZ = %010.8lf \t F(per site) = %3.8lf\n",lnZ,-lnZ*parls[p].T);
 
-    }
+    }// p
 
 
 
