@@ -17,10 +17,10 @@ def GetE(lnZs,Ts):
 
 def GetCv(lnZs,Ts):
     
-    dlnZdT  , newT = Div(Ts,lnZs)
-    dlnZdT2 , newT = Div(newT, dlnZdT)
+    Es,newTs = GetE(lnZs,Ts)
+    dEdT , newT = Div(newTs, Es)
  
-    return newT**2 * dlnZdT2 , newT
+    return  dEdT , newT
 
 
 
