@@ -92,20 +92,21 @@ int main(int argc, char* argv[]){
 
 
         //normalize:
-        //nrm = Norm(T.GetBlock());
-        //nrm = trace(T.getBlock());
         lnNrms.clear();
-        nrm = abs(Utils::GetMax(T));
+        nrm = trace(T.getBlock());
+        //nrm = abs(Utils::GetMax(T));
+        //nrm = 1;
         lnNrms.push_back(log(nrm));
         T*= (double)1./nrm;
-
+        //cout << T << endl;
+        //exit(1);
         ///Cgran.
         for(unsigned int itr=0;itr<nL;itr++){
             L = pow(2,itr+1);
             printf(" cgram : %4d | L : %4d \n",itr, (unsigned int)L);
             Utils::Update(0,chi,T,Nwrk_lr);
             Utils::Update(1,chi,T,Nwrk_ud);
-            nrm = norm(T.getBlock())*0.8;
+            nrm = trace(T.getBlock());
             //nrm = Utils::GetMax(T);
             //nrm = abs(trace(T.getBlock()));
             cout << "nrm " << nrm << endl;
