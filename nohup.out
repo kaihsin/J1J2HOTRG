@@ -16511,3 +16511,23 @@ icpc: warning #10145: no action performed for file '/home/kaywu/uni10_Temp/lib/l
 icpc -std=c++11 -O3 -mkl=parallel -DUNI_CPU -DUNI_LAPACK -DUNI_MKL j1j2hotrg.o parser.o utils.o -o j1j2hotrg /home/kaywu/uni10_Temp/lib/libuni10_lapack_cpu.so -L/home/kaywu/uni10_Temp/lib -I/home/kaywu/uni10_Temp/include
 CWD for depslib was: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
 CWD for depslib is: /home/kaywu/ProjeOption "-t" is deprecated and might be removed in a later version of gnome-terminal.
+ct/j1j2hotrg/test2/j1j2hotrg.
+Scanned 0 files for #includes, cache used 0, cache updated 0
+CWD for depslib was: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+CWD for depslib is: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+Scanned 0 files for #includes, cache used 0, cache updated 0
+CWD for depslib was: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+CWD for depslib is: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+Scanned 0 files for #includes, cache used 0, cache updated 0
+CWD for depslib was: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+CWD for depslib is: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+Scanned 0 files for #includes, cache used 0, cache updated 0
+CWD for depslib was: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+CWD for depslib is: /home/kaywu/Project/j1j2hotrg/test2/j1j2hotrg.
+Scanned 0 files for #includes, cache used 0, cache updated 0
+Process terminated with status 0 (0 minute(s), 28 second(s))
+0 error(s), 0 warning(s) (0 minute(s), 28 second(s))
+-------------- Run: Debug in j1j2hotrg (compiler: GNU GCC Compiler)---------------
+Process terminated with status 0 (0 minute(s), 0 second(s))
+Removed j1j2hotrg from all deps
+Deinitializing plugins...
