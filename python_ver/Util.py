@@ -1,5 +1,23 @@
 import numpy as np 
 import torch
+import scipy as sp
+from scipy import linalg
+
+
+def StableSvd(M):
+
+    #M is a torch tensor.
+    npM = M.numpy()
+    Q,R,P = sp.linalg.qr(npM,pivoting=True)    
+    P = np.diag(np.ones(len(P)))[P,:]
+    R = torch.from_numpy(R.dot(P))
+    U,S,V = torch.svd(R)
+    U = torch.matmul(torch.from_numpy(Q),U)
+
+    return U,S,V
+
+
+
 def MakeLocal(J1,J2,Beta):
     tmp = np.zeros((2,2,2,2))
      
@@ -36,8 +54,12 @@ def Update(A,chi):
 
     A = A.contiguous().view(Ash[0]*Ash[1]*Ash[2]*Ash[3],-1)
     U1 , S1, V1 = torch.svd(A)
+    #U1 , S1, V1 = StableSvd(A)
+
     A = A.view(-1,Ash[2]*Ash[3]*Ash[4]*Ash[5])
     U2 , S2, V2 = torch.svd(A)
+    #U2 , S2, V2 = StableSvd(A)
+   
     print("S1")
     print(S1)
     print("S2")
