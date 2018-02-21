@@ -53,17 +53,17 @@ def Update(A,chi):
     Ash = A.size()
 
     A = A.contiguous().view(Ash[0]*Ash[1]*Ash[2]*Ash[3],-1)
-    U1 , S1, V1 = torch.svd(A)
-    #U1 , S1, V1 = StableSvd(A)
+    #U1 , S1, V1 = torch.svd(A)
+    U1 , S1, V1 = StableSvd(A)
 
     A = A.view(-1,Ash[2]*Ash[3]*Ash[4]*Ash[5])
-    U2 , S2, V2 = torch.svd(A)
-    #U2 , S2, V2 = StableSvd(A)
+    #U2 , S2, V2 = torch.svd(A)
+    U2 , S2, V2 = StableSvd(A)
    
-    print("S1")
-    print(S1)
-    print("S2")
-    print(S2)
+    #print("S1")
+    #print(S1)
+    #print("S2")
+    #print(S2)
     ## truncation:
     new_chi = Ash[4]*Ash[5]
 
