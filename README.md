@@ -27,7 +27,7 @@ Energy (per-site):
 ![alt text](Demo/J1_-10_J2_00_Ky6/E.jpg)
 
 Free-Energy (per-site):
-![alt text](Data/J1_-10_J2_00_Ky6/F.jpg)
+![alt text](Demo/J1_-10_J2_00_Ky6/F.jpg)
 
 Specific heat (per-site):
-![alt text](Data/J1_-10_J2_00_Ky6/F.jpg)
+![alt text](Demo/J1_-10_J2_00_Ky6/Cv.jpg)
