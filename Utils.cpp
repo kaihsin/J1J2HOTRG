@@ -103,39 +103,36 @@ void Utils::truncateLUs(const int dir, const int &chi, vector<UniTensor<double> 
 
 
 	//L or U
-	//cout << "svd1\n";
-	//svdUs[1].printDiagram();
-	ori_labels = svdUs[1].label();
-	new_bonds = svdUs[1].bond();
-	new_bonds[1] = Bond(BD_OUT, chi);
-	/*
-	Resize(blk, svdUs[1].GetBlock(), svdUs[1].GetBlock().row(), chi, INPLACE);
-	svdUs[1].Assign(new_bonds);
-	svdUs[1].PutBlock(blk);
-	svdUs[1].SetLabel(ori_labels);
-	Contract(T2,T2,svdUs[1],INPLACE);
-	*/
-	resize(blk, svdUs[1].getBlock(), svdUs[1].getBlock().row(), chi, INPLACE);
-	svdUs[1].assign(new_bonds);
-	svdUs[1].putBlock(blk);
-	svdUs[1].setLabel(ori_labels);
-	T2 = contract(T2,svdUs[1],INPLACE);
+	if(dir==0){
+	    ori_labels = svdUs[1].label();
+	    new_bonds = svdUs[1].bond();
+	    new_bonds[1] = Bond(BD_OUT, chi);
+	    resize(blk, svdUs[1].getBlock(), svdUs[1].getBlock().row(), chi, INPLACE);
+	    svdUs[1].assign(new_bonds);
+	    svdUs[1].putBlock(blk);
+	    svdUs[1].setLabel(ori_labels);
+	    T2 = contract(T2,svdUs[1],INPLACE);
+        //cout << T2 ;
+	    ori_labels = svdUs[3].label();
+        svdUs[1].setLabel(ori_labels);
+        T2 = contract(T2,svdUs[1],INPLACE);
+        //cout << T2;
+    }else{
+        ori_labels = svdUs[3].label();
+	    new_bonds = svdUs[3].bond();
+	    new_bonds[1] = Bond(BD_OUT, chi);
+	    resize(blk, svdUs[3].getBlock(), svdUs[3].getBlock().row(), chi, INPLACE);
+	    svdUs[3].assign(new_bonds);
+	    svdUs[3].putBlock(blk);
+	    svdUs[3].setLabel(ori_labels);
+	    T2 = contract(T2,svdUs[3],INPLACE);
+        //cout << T2;
+	    ori_labels = svdUs[1].label();
+        svdUs[3].setLabel(ori_labels);
+        T2 = contract(T2,svdUs[3],INPLACE);
+        //cout << T2;
+    }
 
-	ori_labels = svdUs[3].label();
-	new_bonds = svdUs[3].bond();
-	new_bonds[1] = Bond(BD_OUT, chi);
-	/*
-	Resize(blk, svdUs[3].GetBlock(), svdUs[3].GetBlock().row(), chi, INPLACE);
-	svdUs[3].Assign(new_bonds);
-	svdUs[3].PutBlock(blk);
-	svdUs[3].SetLabel(ori_labels);
-	Contract(T2,T2,svdUs[3],INPLACE);
-    */
-	resize(blk, svdUs[3].getBlock(), svdUs[3].getBlock().row(), chi, INPLACE);
-	svdUs[3].assign(new_bonds);
-	svdUs[3].putBlock(blk);
-	svdUs[3].setLabel(ori_labels);
-	T2 = contract(T2,svdUs[3],INPLACE);
 }
 
 
@@ -151,37 +148,45 @@ void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, N
 	vector<Matrix<double> > svdLs;
 	vector<UniTensor<double> > svdUs;
 	UniTensor<double> Core,T2;
-
+    double e1=0,e2=0;
 	//ContractArgs(T2,Nwrk,T,T);
 	//T2.CombineBond({1,2});
 	//T2.CombineBond({4,5});
 
 	contract_args(T2,Nwrk,T,T);
+    //cout << T2 << endl;
+
 
 	T2.combineBond({1,2});
 	T2.combineBond({4,5});
 
-	hosvd( T2, T2.label(), groups, svdUs, Core, svdLs, INPLACE);
+
 	//Hosvd( T2, T2.label(), groups, svdUs, Core, svdLs, INPLACE);
 
-	///truncation :
-	if(svdUs[1].bond(1).dim() > chi){
-        //cout << "IN" << endl;
-		truncateLUs(dir,chi,svdUs,T2);
-	}else{
-
-		//T2 = Contract(T2,svdUs[1]);
-		//T2 = Contract(T2,svdUs[3]);
-		T2 = contract(T2,svdUs[1],INPLACE);
-		T2 = contract(T2,svdUs[3],INPLACE);
-	}
+    //cout << "OK";
     //exit(1);
-	//T2.SetLabel({0,3,1,4});
-	//Permute(T2,per_lbl,2,INPLACE);
-	//T.Assign(T2.bond());
-	//T.PutBlock(T2.GetBlock());
 
-    T2.setLabel({0,3,1,4});
+	///truncation :
+	if(T2.bond(1).dim() > chi){
+	    hosvd( T2, T2.label(), groups, svdUs, Core, svdLs, INPLACE);
+        //cout << "IN" << endl;
+        //cout << svdLs[1] << endl;
+        //exit(1);
+        for(unsigned int s=chi;s<svdUs[1].bond(1).dim();s++)
+            e1 += pow(svdLs[1][s],2);
+        for(unsigned int s=chi;s<svdUs[3].bond(1).dim();s++)
+            e2 += pow(svdLs[3][s],2);
+        //cout << e1 << " " << e2;
+        //exit(1);
+        if(e1<e2)
+		    truncateLUs(0,chi,svdUs,T2);
+        else
+            truncateLUs(1,chi,svdUs,T2);
+
+        T2.setLabel({0,3,1,4});
+	}
+    
+    
 	permute(T2,per_lbl,2,INPLACE);
     T.assign(T2.bond());
 	T.putBlock(T2.getBlock());

@@ -17,6 +17,9 @@ class Param:
 
 def Launch(J1,J2,Beta,chi,nL,savPath):
 
+    #A = IsingLocal(Beta)
+    
+    #print(A)
     A = MakeLocal(J1,J2,Beta)
     # A.dim=[2 x 2 x 2 x 2] (l,u,r,d)
 
@@ -35,24 +38,16 @@ def Launch(J1,J2,Beta,chi,nL,savPath):
         L = 2**(i+1)
 
         #Update LR:
-        A = Update(A,chi)
+        A = Update(A,chi,0)
         # Update UD:
-        A = Update(A,chi)
+        A = Update(A,chi,1)
     
         Ash = A.size()
         tr = A.contiguous().view(Ash[0]*Ash[1],-1).trace()
-        if tr > 1E2:    
-            A /= tr
-        else:
-            tr = 1
-        print(tr)
+        A /= tr
         logNrm.append(np.log(tr))
-	
-        #lnZ = np.log(A.contiguous().view(Ash[0]*Ash[1],-1).trace())
-        #print(lnZ)
-        #lnZ /= L**2
+
         lnZ = 0	
-        #print(logNrm)
 
         for j in range(len(logNrm)):
             lnZ += logNrm[len(logNrm)-j-1] * 4**j / L**2
@@ -72,17 +67,17 @@ def Launch(J1,J2,Beta,chi,nL,savPath):
 if not os.path.exists("Data"):
 	os.system("mkdir Data")
 
-ID = "J1-10-J2-02-Ky10"
+ID = "J1_10_J2_00_Ky12"
 
-J1 = 1.
-J2 = 0.2
+J1 = -1.
+J2 = 0.0
 
-chi = 10
-nL = 12
+chi = 12
+nL = 16
 
-Ti = 0.1
-Tf = 1.0
-NT = 32
+Ti = 1.0
+Tf = 3.0
+NT = 128
 
 #prepare Path:
 savDir = "Data/%s"%(ID)
@@ -92,8 +87,8 @@ os.system("mkdir %s"%(savDir))
 
 
 for t in range(NT):
-	Beta = 1./(Ti + t*(Tf-Ti)/NT)	
-	Launch(J1,J2,Beta,chi,nL,savDir)
-
+    Beta = 1./(Ti + t*(Tf-Ti)/NT)	
+    Launch(J1,J2,Beta,chi,nL,savDir)
+    #exit(1)
 
 

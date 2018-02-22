@@ -116,10 +116,11 @@ int main(int argc, char* argv[]){
             lnNrms.push_back(log(nrm));
 
             ///Measurement:
-            bufT = partialTrace(T,0,2);
-            tmpZ = trace(bufT.getBlock());
-            lnZ = log(tmpZ)/L/L;
-            cout << tmpZ << " " << lnZ << endl;
+            //bufT = partialTrace(T,0,2);
+            //tmpZ = trace(T.getBlock());
+            //lnZ = log(tmpZ)/L/L;
+            //cout << tmpZ << " " << lnZ << endl;
+            lnZ = 0;
 
             for(int n=0;n<lnNrms.size();n++){
                 lnZ += lnNrms[lnNrms.size()-n-1] * (pow(4,n)/L/L);
