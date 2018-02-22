@@ -24,10 +24,10 @@
 Following shows the result for Chi = 6, L = 4096
 
 Energy (per-site):
-![Scheme](Demo/J1_-10_J2_00_Ky6/E.jpg)
+![picture](Demo/J1_-10_J2_00_Ky6/E.jpg)
 
 Free-Energy (per-site):
-![Scheme](Demo/J1_-10_J2_00_Ky6/F.jpg)
+![picture](Demo/J1_-10_J2_00_Ky6/F.jpg)
 
 Specific heat (per-site):
-![Scheme](Demo/J1_-10_J2_00_Ky6/Cv.jpg)
+![picture](Demo/J1_-10_J2_00_Ky6/Cv.jpg)
