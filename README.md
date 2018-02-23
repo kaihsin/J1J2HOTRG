@@ -1,10 +1,9 @@
 # HOTRG for 2D Ising J1-J2 model #
 
-	[Note] This version is using the pre-alpha version of uni10. 
 
-## Install Tuni10 ##
+## Install uni10 ##
 
-	see Tuni10_install/INSTALL_GUIDE.md for further details.
+    	
 
 
 ## To run ##

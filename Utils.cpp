@@ -8,7 +8,7 @@ using namespace uni10;
 using namespace boost::math;
 
 double Utils::GetMax(UniTensor<double> &T){
-    return abs(T.getElem()[cblas_idamax(T.elemNum(), T.getElem() , 1)]);
+    return abs(T.GetElem()[cblas_idamax(T.ElemNum(), T.GetElem() , 1)]);
 }
 
 
@@ -43,14 +43,14 @@ uni10::UniTensor<double> Utils::MakeLocal(const double &J1, const double &J2, co
         for(int u=0;u<2;u++)
             for(int r=0;r<2;r++)
                 for(int d=0;d<2;d++){
-                    sigD1 = (2.*l - 1)*(2.*r - 1);
-                    sigD2 = sigD1*(2.*l - 1)*(2.*u - 1);
+                    sigD1 = (2.*l - 1)*(2.*d - 1);
+                    sigD2 = (2.*l - 1)*(2.*u - 1);
                     Raw[l*8+u*4+r*2+d] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2
                                         * exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2));
 
                 }
     //O.SetElem(Raw);
-    O.setElem(Raw);
+    O.SetElem(Raw);
     return O;
 
 }
@@ -85,7 +85,7 @@ UniTensor<double> Utils::Make_T(const double &Beta,const double &h,const unsigne
 
     UniTensor<double> T(Bds);
     //T.PutBlock(rawN);
-    T.putBlock(rawN);
+    T.PutBlock(rawN);
     return T;
 
 
@@ -107,29 +107,29 @@ void Utils::truncateLUs(const int dir, const int &chi, vector<UniTensor<double> 
 	    ori_labels = svdUs[1].label();
 	    new_bonds = svdUs[1].bond();
 	    new_bonds[1] = Bond(BD_OUT, chi);
-	    resize(blk, svdUs[1].getBlock(), svdUs[1].getBlock().row(), chi, INPLACE);
-	    svdUs[1].assign(new_bonds);
-	    svdUs[1].putBlock(blk);
-	    svdUs[1].setLabel(ori_labels);
-	    T2 = contract(T2,svdUs[1],INPLACE);
+	    Resize(blk, svdUs[1].GetBlock(), svdUs[1].GetBlock().row(), chi, INPLACE);
+	    svdUs[1].Assign(new_bonds);
+	    svdUs[1].PutBlock(blk);
+	    svdUs[1].SetLabel(ori_labels);
+	    Contract(T2,T2,svdUs[1],INPLACE);
         //cout << T2 ;
 	    ori_labels = svdUs[3].label();
-        svdUs[1].setLabel(ori_labels);
-        T2 = contract(T2,svdUs[1],INPLACE);
+        svdUs[1].SetLabel(ori_labels);
+        Contract(T2,T2,svdUs[1],INPLACE);
         //cout << T2;
     }else{
         ori_labels = svdUs[3].label();
 	    new_bonds = svdUs[3].bond();
 	    new_bonds[1] = Bond(BD_OUT, chi);
-	    resize(blk, svdUs[3].getBlock(), svdUs[3].getBlock().row(), chi, INPLACE);
-	    svdUs[3].assign(new_bonds);
-	    svdUs[3].putBlock(blk);
-	    svdUs[3].setLabel(ori_labels);
-	    T2 = contract(T2,svdUs[3],INPLACE);
+	    Resize(blk, svdUs[3].GetBlock(), svdUs[3].GetBlock().row(), chi, INPLACE);
+	    svdUs[3].Assign(new_bonds);
+	    svdUs[3].PutBlock(blk);
+	    svdUs[3].SetLabel(ori_labels);
+	    Contract(T2,T2,svdUs[3],INPLACE);
         //cout << T2;
 	    ori_labels = svdUs[1].label();
-        svdUs[3].setLabel(ori_labels);
-        T2 = contract(T2,svdUs[3],INPLACE);
+        svdUs[3].SetLabel(ori_labels);
+        Contract(T2,T2,svdUs[3],INPLACE);
         //cout << T2;
     }
 
@@ -137,7 +137,7 @@ void Utils::truncateLUs(const int dir, const int &chi, vector<UniTensor<double> 
 
 
 //void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, Network &Nwrk){
-void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, Network<double> &Nwrk){
+void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, Network &Nwrk){
 
 	vector<int> per_lbl;
 	if(dir == 0) per_lbl = vector<int>{0,1,3,4};
@@ -153,12 +153,12 @@ void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, N
 	//T2.CombineBond({1,2});
 	//T2.CombineBond({4,5});
 
-	contract_args(T2,Nwrk,T,T);
+	ContractArgs(T2,Nwrk,T,T);
     //cout << T2 << endl;
 
 
-	T2.combineBond({1,2});
-	T2.combineBond({4,5});
+	T2.CombineBond({1,2});
+	T2.CombineBond({4,5});
 
 
 	//Hosvd( T2, T2.label(), groups, svdUs, Core, svdLs, INPLACE);
@@ -168,7 +168,7 @@ void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, N
 
 	///truncation :
 	if(T2.bond(1).dim() > chi){
-	    hosvd( T2, T2.label(), groups, svdUs, Core, svdLs, INPLACE);
+	    Hosvd( T2, T2.label(), groups, svdUs, Core, svdLs, INPLACE);
         //cout << "IN" << endl;
         //cout << svdLs[1] << endl;
         //exit(1);
@@ -183,13 +183,13 @@ void Utils::Update(const int dir,const unsigned int &chi,UniTensor<double> &T, N
         else
             truncateLUs(1,chi,svdUs,T2);
 
-        T2.setLabel({0,3,1,4});
+        T2.SetLabel({0,3,1,4});
 	}
     
     
-	permute(T2,per_lbl,2,INPLACE);
-    T.assign(T2.bond());
-	T.putBlock(T2.getBlock());
+	Permute(T2,per_lbl,2,INPLACE);
+    T.Assign(T2.bond());
+	T.PutBlock(T2.GetBlock());
 
 
 }

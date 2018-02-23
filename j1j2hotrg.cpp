@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 //#include "uni10.hpp"
-#include "uni10/uni10.hpp"
+#include "uni10.hpp"
 #include "Parser.hpp"
 #include "Utils.hpp"
 using namespace std;
@@ -57,8 +57,8 @@ int main(int argc, char* argv[]){
     ///Prepare Network;
 	//Network Nwrk_lr("lr.net");
     //Network Nwrk_ud("ud.net");
-    Network<double> Nwrk_lr("lr.net");
-    Network<double> Nwrk_ud("ud.net");
+    Network Nwrk_lr("lr.net");
+    Network Nwrk_ud("ud.net");
 
     ///SaveDir:
     string datDir = "Data/" + ID;
@@ -93,7 +93,7 @@ int main(int argc, char* argv[]){
 
         //normalize:
         lnNrms.clear();
-        nrm = trace(T.getBlock());
+        nrm = Trace(T.GetBlock());
         //nrm = abs(Utils::GetMax(T));
         //nrm = 1;
         lnNrms.push_back(log(nrm));
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]){
             printf(" cgram : %4d | L : %4d \n",itr, (unsigned int)L);
             Utils::Update(0,chi,T,Nwrk_lr);
             Utils::Update(1,chi,T,Nwrk_ud);
-            nrm = trace(T.getBlock());
+            nrm = Trace(T.GetBlock());
             //nrm = Utils::GetMax(T);
             //nrm = abs(trace(T.getBlock()));
             cout << "nrm " << nrm << endl;

@@ -1,9 +1,9 @@
-uni10v2ROOT := /home/kaywu/uni10_Temp
+uni10v2ROOT := /home/kaywu/uni10_20
 
 CC := icpc
 CCFLAGS := -std=c++11 -O3 -mkl=parallel -DUNI_CPU -DUNI_LAPACK -DUNI_MKL
 LDFLAGS := -L$(uni10v2ROOT)/lib -I$(uni10v2ROOT)/include
-OBJ := $(uni10v2ROOT)/lib/libuni10_lapack_cpu.so
+OBJ := $(uni10v2ROOT)/lib/libuni10.so.2
 
 all : j1j2hotrg
 
