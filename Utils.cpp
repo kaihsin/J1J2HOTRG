@@ -46,7 +46,7 @@ uni10::UniTensor<double> Utils::MakeLocal(const double &J1, const double &J2, co
                     sigD1 = (2.*l - 1)*(2.*r - 1);
                     sigD2 = sigD1*(2.*l - 1)*(2.*u - 1);
                     Raw[l*8+u*4+r*2+d] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2
-                                        * exp(J1*Beta*0.5*(2.*(l+u+r+d)-4.) + J2*Beta*(sigD1+sigD2));
+                                        * exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2));
 
                 }
     //O.SetElem(Raw);

@@ -52,7 +52,43 @@ def MakeLocal(J1,J2,Beta):
                     tmp[l,u,r,d] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2\
                                         * np.exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2));
 
+
+
     return tmp
+
+def MakeLocalv2(J1,J2,h,Beta):
+    tmp = np.zeros((4,4,4,4))
+     
+    for al in range(4):
+        for au in range(4):
+            for ar in range(4):
+                for ad in range(4):
+                    l = int(al/2)
+                    u = int(au/2)
+                    r = int(ar/2)
+                    d = int(ad/2)
+
+                    sl = 2*(sl%2)-1
+                    sr = 2*(sr%2)-1
+                    su = 2*(su%2)-1
+                    sd = 2*(sd%2)-1
+                    if not sl*sr + sr*su+ su*sd == -3:  
+                        continue
+
+                    S1 = sl
+                    S2 = sl*(2.*l -1.)
+                    S3 = S2*(2.*d -1.)
+                    S4 = sl*(2.*u -1.)
+
+                    sigD1 = (2.*l -1.)*(2.*d-1.)    
+                    sigD2 = (2.*l-1.)*(2.*u-1.)
+                    tmp[l,u,r,d] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2\
+                                        * np.exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2) + h*Beta*0.5*(S1+S2+S3+S4));
+
+
+
+    return tmp
+
 
 
 def Update(A,chi,direct):
