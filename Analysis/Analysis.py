@@ -49,11 +49,14 @@ for fname in sname:
         tmp = []
         for t in range(len(Tset)):
             tmp.append(GetM(dat[j1j2,:,t,3],dat[j1j2,:,t,4],dat[j1j2,:,t,2]))
+            plt.show()
         datM0.append( np.array(tmp))
         
     datM0 = np.array(datM0).reshape((len(datM0),len(Tset),1))
     dath0 = np.concatenate((dath0,datM0),axis=2)
-    
+    print(datM0)   
+
+ 
     #rawR.append(dath0)
     ## number of J1J2 sets
     for a in range(len(dath0)):

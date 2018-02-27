@@ -82,7 +82,7 @@ def MakeLocalv2(J1,J2,h,Beta):
 
                     sigD1 = (2.*l -1.)*(2.*d-1.)    
                     sigD2 = (2.*l-1.)*(2.*u-1.)
-                    tmp[l,u,r,d] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2\
+                    tmp[al,au,ar,ad] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2\
                                         * np.exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2) + h*Beta*0.5*(S1+S2+S3+S4));
 
 

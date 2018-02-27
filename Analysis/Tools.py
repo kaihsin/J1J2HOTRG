@@ -1,5 +1,5 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 def SmoothDiv(x,y,fitorder=1,grppt=2):
 	outx,outy = [],[]
@@ -54,7 +54,9 @@ def GetM(hs,lnZs,Ts):
     print(Ts) 
     c  = np.polyfit(hs,lnZs*Ts,3)
     dc = np.polyder(c)
-    
+    #plt.plot(hs,np.polyval(c,hs))
+    #plt.plot(hs,lnZs*Ts)
+    plt.show()
     return np.polyval(dc,0)
 
 
