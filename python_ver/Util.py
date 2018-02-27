@@ -53,8 +53,10 @@ def MakeLocal(J1,J2,Beta):
                                         * np.exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2));
 
 
-
     return tmp
+
+
+
 
 def MakeLocalv2(J1,J2,h,Beta):
     tmp = np.zeros((4,4,4,4))
@@ -63,29 +65,32 @@ def MakeLocalv2(J1,J2,h,Beta):
         for au in range(4):
             for ar in range(4):
                 for ad in range(4):
-                    l = int(al/2)
-                    u = int(au/2)
-                    r = int(ar/2)
-                    d = int(ad/2)
+                    bl = 2*int(al/2)-1
+                    bu = 2*int(au/2)-1
+                    br = 2*int(ar/2)-1
+                    bd = 2*int(ad/2)-1
 
                     sl = 2*(al%2)-1
                     sr = 2*(ar%2)-1
                     su = 2*(au%2)-1
                     sd = 2*(ad%2)-1
-                    if not sl*sr + sr*su+ su*sd == -3:  
+ 
+                    S1 = sl
+                    S2 = sl*bl
+                    S3 = S2*bd
+                    S4 = sl*bu
+                    if not sl*sd + sd*sr + sr*su == -3 :
                         continue
 
-                    S1 = sl
-                    S2 = sl*(2.*l -1.)
-                    S3 = S2*(2.*d -1.)
-                    S4 = sl*(2.*u -1.)
 
-                    sigD1 = (2.*l -1.)*(2.*d-1.)    
-                    sigD2 = (2.*l-1.)*(2.*u-1.)
-                    tmp[al,au,ar,ad] = (1.+(2.*l-1.)*(2.*r-1.)*(2.*u-1.)*(2.*d-1.))/2\
-                                        * np.exp(-J1*Beta*0.5*(2.*(l+u+r+d)-4.) - J2*Beta*(sigD1+sigD2) + h*Beta*0.5*(S1+S2+S3+S4));
+                    sigD1 = bl*bd   
+                    sigD2 = bl*bu
+
+                    tmp[al,au,ar,ad] = (1.+bl*bu*br*bd)/2\
+                                        * np.exp(-J1*Beta*0.5*(bl+bu+br+bd) - J2*Beta*(sigD1+sigD2) + h*Beta*0.25*(S1+S2+S3+S4));
 
 
+    #exit(1)
 
     return tmp
 
