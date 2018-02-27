@@ -15,12 +15,12 @@ class Param:
 """
 
 
-def Launch(J1,J2,Beta,chi,nL,savPath):
+def Launch(J1,J2,Beta,h,chi,nL,savPath):
 
     #A = IsingLocal(Beta)
     
     #print(A)
-    A = MakeLocal(J1,J2,Beta)
+    A = MakeLocalv2(J1,J2,Beta,h)
     # A.dim=[2 x 2 x 2 x 2] (l,u,r,d)
 
     A = torch.from_numpy(A)
@@ -57,9 +57,9 @@ def Launch(J1,J2,Beta,chi,nL,savPath):
 
         # Write to file
         f = open(os.path.join(savPath,"%d.dat"%(L)),'a+')
-        f.write("%11.11lf %11.11lf %11.11lf %11.11lf %11.11lf\n"%(J1,J2,Beta,lnZ,F))
+        f.write("%11.11lf %11.11lf %11.11lf %11.11lf %11.11lf %11.11lf\n"%(J1,J2,1./Beta,h,lnZ,F))
         f.close()
-        print("L=%d J1=%4.6lf J2=%4.6lf Beta=%4.6lf lnZ=%4.6lf F=%4.6lf"%(L,J1,J2,Beta,lnZ,F))
+        print("L=%d J1=%4.6lf J2=%4.6lf T=%4.6lf h=%4.6lf lnZ=%4.6lf F=%4.6lf"%(L,J1,J2,1./Beta,h,lnZ,F))
 
 
 #===============================	
@@ -72,12 +72,18 @@ ID = "J1_10_J2_00_Ky12"
 J1 = -1.
 J2 = 0.0
 
-chi = 12
+chi = 6
 nL = 16
 
-Ti = 1.0
+
+Ti = 2.0
 Tf = 3.0
-NT = 128
+NT = 64
+
+hi  = -0.01
+hf  = 0.01
+Nh = 16
+
 
 #prepare Path:
 savDir = "Data/%s"%(ID)
@@ -87,8 +93,10 @@ os.system("mkdir %s"%(savDir))
 
 
 for t in range(NT):
-    Beta = 1./(Ti + t*(Tf-Ti)/NT)	
-    Launch(J1,J2,Beta,chi,nL,savDir)
+    for n in range(Nh):
+        Beta = 1./(Ti + t*(Tf-Ti)/NT)
+        h    = hi + n*(hf-hi)/Nh
+        Launch(J1,J2,Beta,h,chi,nL,savDir)
     #exit(1)
 
 

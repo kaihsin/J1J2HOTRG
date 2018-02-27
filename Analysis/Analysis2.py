@@ -6,17 +6,6 @@ from Tools import *
 
 
 	
-def GetE(Ts,lnZs):
-    newT , dlnZs= Derivative(Ts,lnZs,2,7) 
-    return newT , newT**2 * dlnZs
-
-
-def GetCv(Ts,lnZs):
-    
-    newTs,Es = GetE(Ts,lnZs)
-    newT ,dEs = Derivative(newTs, Es,1,3)
- 
-    return  newT, dEs
 
 
 

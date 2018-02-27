@@ -68,10 +68,10 @@ def MakeLocalv2(J1,J2,h,Beta):
                     r = int(ar/2)
                     d = int(ad/2)
 
-                    sl = 2*(sl%2)-1
-                    sr = 2*(sr%2)-1
-                    su = 2*(su%2)-1
-                    sd = 2*(sd%2)-1
+                    sl = 2*(al%2)-1
+                    sr = 2*(ar%2)-1
+                    su = 2*(au%2)-1
+                    sd = 2*(ad%2)-1
                     if not sl*sr + sr*su+ su*sd == -3:  
                         continue
 
