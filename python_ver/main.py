@@ -86,9 +86,9 @@ NT = 64
 #hi  = -0.01
 #hf  = 0.01
 #Nh = 16
-hi = 0
-hf = 0 
-Nh = 1
+#hi = 0
+#hf = 0 
+#Nh = 1
 
 #prepare Path:
 savDir = "Data/%s"%(ID)
@@ -98,8 +98,8 @@ os.system("mkdir %s"%(savDir))
 
 
 for t in range(NT):
-    for n in range(Nh):
+#    for n in range(Nh):
         Beta = 1./(Ti + t*(Tf-Ti)/NT)
-        h    = hi + n*(hf-hi)/Nh
-        Launch(J1,J2,Beta,h,chi,nL,savDir)
+        #h    = hi + n*(hf-hi)/Nh
+        Launch(J1,J2,Beta,0,chi,nL,savDir)
     #exit(1)
