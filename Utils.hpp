@@ -10,6 +10,7 @@
 namespace Utils{
 
     uni10::UniTensor<double> MakeLocal(const double &J1, const double &J2, const double &Beta);
+    uni10::UniTensor<double> MakeLocal_h(const double &J1, const double &J2,const double &h, const double &Beta);
 	void truncateLUs(const int dir, const int &chi, std::vector<uni10::UniTensor<double> >& svdUs,uni10::UniTensor<double> &T2);
     //void Update(const int dir,const unsigned int &chi,uni10::UniTensor<double> &T, uni10::Network &Nwrk);
     void Update(const int dir,const unsigned int &chi,uni10::UniTensor<double> &T, uni10::Network &Nwrk);
